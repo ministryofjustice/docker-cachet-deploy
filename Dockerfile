@@ -22,5 +22,5 @@ RUN chmod 0644 /etc/cron.d/artisan-schedule &&\
 
 EXPOSE 8000
 
-ENTRYPOINT ["/sbin/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash","-c","chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
 CMD ["start"]
