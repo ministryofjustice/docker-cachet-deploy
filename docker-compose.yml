@@ -7,6 +7,7 @@ services:
       - ./docker/nginx-site.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:8000
+    mem_limit: 1024m
     links:
       - cachet
     volumes_from:
@@ -15,11 +16,17 @@ services:
       - cachet
   postgres:
     image: postgres:9.5
+    mem_limit: 1024m
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   cachet:
     build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ${REGISTRY}/cachet:${TAG}
+    mem_limit: 1024m
     expose:
       - 9000
     links:
