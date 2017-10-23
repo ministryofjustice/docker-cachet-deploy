@@ -25,7 +25,6 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    image: ${REGISTRY}/cachet:${TAG}
     mem_limit: 1024m
     expose:
       - 9000
