@@ -2,8 +2,8 @@ version: "2"
 
 services:
   postgres:
-    image: postgres:9.5
     mem_limit: 512m
+    image: postgres:9.5
     volumes:
       - /var/lib/postgresql/data
     environment:
