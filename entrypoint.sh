@@ -72,6 +72,7 @@ initialize_system() {
   APP_ENV=${APP_ENV:-development}
   APP_DEBUG=${APP_DEBUG:-true}
   APP_URL=${APP_URL:-http://localhost}
+  APP_LOG=${APP_LOG:-errorlog}
 
   DB_DRIVER=${DB_DRIVER:-pgsql}
   DB_HOST=${DB_HOST:-postgres}
@@ -91,7 +92,11 @@ initialize_system() {
   DB_PORT=${DB_PORT}
 
   CACHE_DRIVER=${CACHE_DRIVER:-apc}
-  SESSION_DRIVER=${SESSION_DRIVER:-apc}
+
+  SESSION_DRIVER=${SESSION_DRIVER:-cookie}
+  SESSION_DOMAIN=${SESSION_DOMAIN:-$APP_URL}
+  SESSION_SECURE_COOKIE=${SESSION_SECURE_COOKIE:-false}
+
   QUEUE_DRIVER=${QUEUE_DRIVER:-database}
   CACHET_EMOJI=${CACHET_EMOJI:-false}
   CACHET_BEACON=${CACHET_BEACON:-true}
@@ -120,19 +125,11 @@ initialize_system() {
   PHP_MAX_CHILDREN=${PHP_MAX_CHILDREN:-5}
 
   # configure env file
-  if [[ "${APP_KEY}" == null ]]; then
-    keygen="$(sudo php artisan key:generate)"
-    echo "${keygen}"
-    appkey=$(echo ${keygen} | grep -oP '(?<=\[).*(?=\])')
-    echo "Please set ${appkey} as your APP_KEY variable in the environment or docker-compose.yml and re-launch"
-    exit 1
-  fi
-
-  sed 's,{{APP_KEY}},'${APP_KEY}',g' -i /var/www/html/.env
 
   sed 's,{{APP_ENV}},'"${APP_ENV}"',g' -i /var/www/html/.env
   sed 's,{{APP_DEBUG}},'"${APP_DEBUG}"',g' -i /var/www/html/.env
   sed 's,{{APP_URL}},'"${APP_URL}"',g' -i /var/www/html/.env
+  sed 's,{{APP_LOG}},'"${APP_LOG}"',g' -i /var/www/html/.env
 
   sed 's,{{DB_DRIVER}},'"${DB_DRIVER}"',g' -i /var/www/html/.env
   sed 's,{{DB_HOST}},'"${DB_HOST}"',g' -i /var/www/html/.env
@@ -143,7 +140,11 @@ initialize_system() {
   sed 's,{{DB_PORT}},'"${DB_PORT}"',g' -i /var/www/html/.env
 
   sed 's,{{CACHE_DRIVER}},'"${CACHE_DRIVER}"',g' -i /var/www/html/.env
+
   sed 's,{{SESSION_DRIVER}},'"${SESSION_DRIVER}"',g' -i /var/www/html/.env
+  sed 's,{{SESSION_DOMAIN}},'"${SESSION_DOMAIN}"',g' -i /var/www/html/.env
+  sed 's,{{SESSION_SECURE_COOKIE}},'"${SESSION_SECURE_COOKIE}"',g' -i /var/www/html/.env
+
   sed 's,{{QUEUE_DRIVER}},'"${QUEUE_DRIVER}"',g' -i /var/www/html/.env
   sed 's,{{CACHET_EMOJI}},'"${CACHET_EMOJI}"',g' -i /var/www/html/.env
   sed 's,{{CACHET_BEACON}},'"${CACHET_BEACON}"',g' -i /var/www/html/.env
@@ -170,6 +171,16 @@ initialize_system() {
   sed 's,{{NEXMO_SMS_FROM}},'"${NEXMO_SMS_FROM}"',g' -i /var/www/html/.env
 
   sudo sed 's,{{PHP_MAX_CHILDREN}},'"${PHP_MAX_CHILDREN}"',g' -i /etc/php7/php-fpm.d/www.conf
+
+  if [[ "${APP_KEY}" == null ]]; then
+    keygen="$(sudo php artisan key:generate)"
+    echo "${keygen}"
+    appkey=$(echo ${keygen} | grep -oP '(?<=\[).*(?=\])')
+    echo "Please set the 'APP_KEY=${appkey}' environment variable at runtime or in docker-compose.yml and re-launch"
+    exit 0
+  fi
+
+  sed 's,{{APP_KEY}},'${APP_KEY}',g' -i /var/www/html/.env
 
   rm -rf bootstrap/cache/*
   chmod -R 777 storage

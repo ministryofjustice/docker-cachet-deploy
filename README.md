@@ -43,24 +43,11 @@ __Note:__ You must specify a unique `APP_KEY` including `base64:` prefix generat
 
 For a full list of Cachet versions released as Docker images  please see the [list of Docker hub tags](https://hub.docker.com/r/cachethq/docker/tags/).
 
-Please use a [tagged Cachet Docker image release](https://github.com/CachetHQ/Docker/releases) or one of the tagged builds from https://hub.docker.com/r/cachethq/docker/tags/ with `docker pull cachethq/docker:2.3.10`.
+Please use a [tagged Cachet Docker image release](https://github.com/CachetHQ/Docker/releases) or one of the tagged builds from https://hub.docker.com/r/cachethq/docker/tags/ with `docker pull cachethq/docker:2.3.12`.
 
 # Debugging
 
-* The services such as supervisord, nginx, and php-fpm log to `stdout`, and are visible in the Docker runtime output. 
-
-* The Cachet applications logs are written inside the container in the `/var/www/html/storage/logs/` directory. These logs are useful for troubleshooting "Houston we have a problem!" or other 500 errors. You can access them via `docker exec`:
-
-  ```
-  # Get current logfile name
-
-  $ docker exec -it docker_cachet_1 ls storage/logs/
-  laravel-2017-06-07.log
-
-  # cat logfile:
-
-  $ docker exec -it docker_cachet_1 cat storage/logs/laravel-2017-06-07.log
-  ```
+* The services such as Cachet, supervisord, nginx, and php-fpm log to `stdout` and `sdterr`, and are visible in the Docker runtime output. 
 
 * Setting the `DEBUG` Docker environment variable within the `docker-compose.yml` file or at runtime to `true` will enable debugging of the container entrypoint init script.
 
