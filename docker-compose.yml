@@ -21,6 +21,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   cachet:
+    image: ${REGISTRY}/status:${TAG}
     build: .
     build: 
       context: .
