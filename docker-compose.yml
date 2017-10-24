@@ -1,43 +1,37 @@
 version: "2"
 
 services:
-  nginx:
-    image: nginx:stable-alpine
-    volumes:
-      - ./docker/nginx-site.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - 80:8000
-    mem_limit: 134217728
-    links:
-      - cachet
-    volumes_from:
-      - cachet
-    depends_on:
-      - cachet
   postgres:
     image: postgres:9.5
-    mem_limit: 134217728
+    volumes:
+      - /var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    restart: always
+    mem_limit: 512m
   cachet:
     image: ${REGISTRY}/cachet:${TAG}
-    build: .
-    build: 
+    build:
       context: .
-      dockerfile: Dockerfile
-    mem_limit: 134217728
-    expose:
-      - 9000
+      args:
+        - cachet_ver=master
+    ports:
+      - 80:8000
     links:
       - postgres:postgres
+    mem_limit: 512m
     environment:
       - DB_DRIVER=pgsql
       - DB_HOST=postgres
+      - DB_PORT=5432
       - DB_DATABASE=postgres
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-    volumes:
-      - /var/www
+      - DB_PREFIX=chq_
+      - APP_KEY=ASiMnpyjjpSTj9/iogMdOe+vfDaQi1ralHWsAzH2Gj4
+      - APP_LOG=errorlog
+      - DEBUG=false
     depends_on:
       - postgres
+    restart: always
