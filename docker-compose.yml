@@ -21,7 +21,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   cachet:
-    image: ${REGISTRY}/status:${TAG}
+    image: cachethq/docker:base-5a0320b
     build: .
     build: 
       context: .
