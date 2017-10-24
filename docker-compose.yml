@@ -1,8 +1,9 @@
-version: "3"
+version: "2"
 
 services:
   postgres:
     image: postgres:9.5
+    mem_limit: 512m
     volumes:
       - /var/lib/postgresql/data
     environment:
@@ -10,6 +11,8 @@ services:
       - POSTGRES_PASSWORD=postgres
     restart: always
   cachet:
+    mem_limit: 512m
+    image: ${REGISTRY}/cachet:${TAG}
     build:
       context: .
       args:
@@ -26,7 +29,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - DB_PREFIX=chq_
-      - APP_KEY=${APP_KEY:-null}
+      - APP_KEY=UyIXoUsiAzvWrnfZwp1DAC50SQHuH5b2
       - APP_LOG=errorlog
       - DEBUG=false
     depends_on:
