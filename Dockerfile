@@ -3,8 +3,7 @@ FROM nginx:1.13.5-alpine
 MAINTAINER Alt Three <support@alt-three.com>
 
 EXPOSE 8000
-ENTRYPOINT ["/bin/bash","-c","chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
-CMD ["start"]
+CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
 
