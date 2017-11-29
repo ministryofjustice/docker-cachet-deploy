@@ -23,7 +23,7 @@ services:
     #   - postgres:postgres
     environment:
       - DB_DRIVER=pgsql
-      - DB_HOST
+      # - DB_HOST
       - DB_PORT
       - DB_DATABASE
       - DB_USERNAME
