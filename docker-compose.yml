@@ -12,7 +12,7 @@ services:
   #   restart: always
   cachet:
     mem_limit: 512m
-    # image: ${REGISTRY}/cachet:${TAG}
+    image: ${REGISTRY}/cachet:${TAG}
     build:
       context: .
       args:
