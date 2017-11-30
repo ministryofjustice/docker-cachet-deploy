@@ -21,7 +21,7 @@ services:
       - 8000:8000
     # links:
     #   - postgres:postgres
-    environment:
+    # environment:
     #   - DB_DRIVER=pgsql
     #   - DB_HOST
     #   - DB_PORT
@@ -29,9 +29,9 @@ services:
     #   - DB_USERNAME
     #   - DB_PASSWORD
     #   - DB_PREFIX=chq_
-      - APP_KEY=UyIXoUsiAzvWrnfZwp1DAC50SQHuH5b2
-      - APP_LOG=errorlog
-      - DEBUG=false
+      # - APP_KEY=UyIXoUsiAzvWrnfZwp1DAC50SQHuH5b2
+      # - APP_LOG=errorlog
+      # - DEBUG=false
     # depends_on:
     #   - postgres
     restart: on-failure
