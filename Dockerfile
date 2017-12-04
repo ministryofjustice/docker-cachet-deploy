@@ -6,7 +6,7 @@ EXPOSE 8000
 CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
-ENV APP_KEY UyIXoUsiAzvWrnfZwp1DAC50SQHuH5b2
+ENV APP_KEY dummy
 
 
 ENV COMPOSER_VERSION 1.4.1
