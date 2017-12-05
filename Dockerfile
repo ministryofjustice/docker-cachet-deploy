@@ -79,7 +79,7 @@ RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php')
     php -r "unlink('/tmp/composer-setup.php');"
 
 WORKDIR /var/www/html/
-USER www-data
+# USER www-data
 
 RUN wget https://github.com/cachethq/Cachet/archive/${cachet_ver}.tar.gz && \
     tar xzvf ${cachet_ver}.tar.gz --strip-components=1 && \
