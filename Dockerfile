@@ -54,7 +54,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stdout /var/log/php7/error.log && \
     ln -sf /dev/stderr /var/log/php7/error.log
 
-RUN addgroup -S postgres
+RUN addgroup -S postgresdatabase
 RUN adduser -S -s /bin/bash -G postgres postgres
 # RUN addgroup -S www-data 
 # RUN adduser -S -s /bin/bash -G www-data www-data 
