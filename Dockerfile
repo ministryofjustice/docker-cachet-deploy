@@ -3,11 +3,10 @@ FROM nginx:1.13.5-alpine
 MAINTAINER Alt Three <support@alt-three.com>
 
 EXPOSE 8000
-CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
+CMD ["/sbin/entrypoint.sh"]
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
 ENV APP_KEY dummy
-
 
 ENV COMPOSER_VERSION 1.4.1
 
@@ -46,7 +45,7 @@ RUN apk add --no-cache --update \
     php7-xml \
     php7-zip \
     php7-zlib \
-    wget sqlite git sudo curl bash grep \
+    wget sqlite git curl bash grep \
     supervisor
 
 # forward request and error logs to docker log collector
@@ -55,19 +54,17 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stdout /var/log/php7/error.log && \
     ln -sf /dev/stderr /var/log/php7/error.log
 
-RUN addgroup -S wwwdata 
-RUN adduser -S -s /bin/bash -G www-ata wwwdata
+RUN addgroup -S www-data && \
+    adduser -S -s /bin/bash -G www-data www-data
 
 RUN touch /var/run/nginx.pid /var/run/php5-fpm.pid && \
-    chown -R wwwdata:wwwdata /var/run/nginx.pid /var/run/php5-fpm.pid
+    chown -R www-data:www-data /var/run/nginx.pid /var/run/php5-fpm.pid /etc/php7/php-fpm.d
 
-RUN echo 'wwwdata ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-RUN mkdir -p /var/www/html 
-RUN mkdir -p /usr/share/nginx/cache 
-RUN mkdir -p /var/cache/nginx && \
+RUN mkdir -p /var/www/html && \
+    mkdir -p /usr/share/nginx/cache && \
+    mkdir -p /var/cache/nginx && \
     mkdir -p /var/lib/nginx && \
-    chown -R wwwdata:wwwdata /var/www /usr/share/nginx/cache /var/cache/nginx /var/lib/nginx/
+    chown -R www-data:www-data /var/www /usr/share/nginx/cache /var/cache/nginx /var/lib/nginx/
 
 RUN ln -s /usr/bin/php7 /usr/bin/php
 
@@ -78,12 +75,12 @@ RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php')
     php /tmp/composer-setup.php --version=$COMPOSER_VERSION --install-dir=bin && \
     php -r "unlink('/tmp/composer-setup.php');"
 
-USER wwwhtml
 WORKDIR /var/www/html/
+USER www-data
 
 RUN wget https://github.com/cachethq/Cachet/archive/${cachet_ver}.tar.gz && \
     tar xzvf ${cachet_ver}.tar.gz --strip-components=1 && \
-    chown -R wwwdata /var/www/html && \
+    chown -R www-data /var/www/html && \
     rm -r ${cachet_ver}.tar.gz && \
     php /bin/composer.phar global require "hirak/prestissimo:^0.3" && \
     php /bin/composer.phar install --no-dev -o && \
