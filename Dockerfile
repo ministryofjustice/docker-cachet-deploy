@@ -3,7 +3,7 @@ FROM nginx:1.13.5-alpine
 MAINTAINER Alt Three <support@alt-three.com>
 
 EXPOSE 8000
-CMD ["/sbin/entrypoint.sh"]
+CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
 ENV APP_KEY dummy
@@ -45,7 +45,7 @@ RUN apk add --no-cache --update \
     php7-xml \
     php7-zip \
     php7-zlib \
-    wget sqlite git curl bash grep \
+    wget sqlite git sudo curl bash grep \
     supervisor
 
 # forward request and error logs to docker log collector
@@ -54,15 +54,17 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stdout /var/log/php7/error.log && \
     ln -sf /dev/stderr /var/log/php7/error.log
 
-RUN addgroup -S www-data && \
-    adduser -S -s /bin/bash -G www-data www-data
+RUN addgroup -S www-data 
+RUN adduser -S -s /bin/bash -G www-data www-data
 
 RUN touch /var/run/nginx.pid /var/run/php5-fpm.pid && \
-    chown -R www-data:www-data /var/run/nginx.pid /var/run/php5-fpm.pid /etc/php7/php-fpm.d
+    chown -R www-data:www-data /var/run/nginx.pid /var/run/php5-fpm.pid
 
-RUN mkdir -p /var/www/html && \
-    mkdir -p /usr/share/nginx/cache && \
-    mkdir -p /var/cache/nginx && \
+RUN echo 'www-data ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+RUN mkdir -p /var/www/html 
+RUN mkdir -p /usr/share/nginx/cache 
+RUN mkdir -p /var/cache/nginx && \
     mkdir -p /var/lib/nginx && \
     chown -R www-data:www-data /var/www /usr/share/nginx/cache /var/cache/nginx /var/lib/nginx/
 
