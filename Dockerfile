@@ -7,6 +7,7 @@ CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
 ENV APP_KEY dummy
+ENV DB_MIGRATION="YES"
 
 ENV COMPOSER_VERSION 1.4.1
 
