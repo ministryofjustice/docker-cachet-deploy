@@ -6,7 +6,6 @@ EXPOSE 8000
 CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
-ENV APP_KEY dummy
 
 # Using repo packages instead of compiling from scratch
 ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
