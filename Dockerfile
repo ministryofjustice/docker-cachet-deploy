@@ -7,16 +7,6 @@ CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
 ENV APP_KEY dummy
-ENV DB_MIGRATION="YES"
-ENV DB_DRIVER="pgsql"
-ENV DB_CONNECTION_STRING="jdbc:postgres://smsle96asnds5o.cu0j0mwhakfm.eu-central-1.rds.amazonaws.com:5432/development"
-ENV DB_ENGINE="postgres"
-ENV DB_HOST="smsle96asnds5o.cu0j0mwhakfm.eu-central-1.rds.amazonaws.com"
-ENV DB_NAME="development"
-ENV DB_PASSWORD="cloudplatforms"
-ENV DB_PORT=5432
-ENV DB_USER="cloudplatforms"
-ENV COMPOSER_VERSION 1.4.1
 
 # Using repo packages instead of compiling from scratch
 ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
