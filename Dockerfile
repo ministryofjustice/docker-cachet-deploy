@@ -6,15 +6,7 @@ EXPOSE 8000
 CMD ["/bin/bash","-c","sudo chmod +x /sbin/entrypoint.sh && /sbin/entrypoint.sh"]
 ARG cachet_ver
 ENV cachet_ver ${cachet_ver:-master}
-ENV APP_KEY dummy
-ENV DB_CONNECTION_STRING $DB_CONNECTION_STRING
-ENV DB_ENGINE $DB_ENGINE
-ENV DB_HOST $DB_HOST
-ENV DB_NAME $DB_NAME
-ENV DB_PASSWORD $DB_PASSWORD
-ENV DB_PORT $DB_PORT
-ENV DB_USER $DB_USER
-
+ 
 # Using repo packages instead of compiling from scratch
 ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 RUN echo "@php http://php.codecasts.rocks/v3.5/php-7.0" >> /etc/apk/repositories
