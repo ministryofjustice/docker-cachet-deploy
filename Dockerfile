@@ -13,9 +13,9 @@ ENV COMPOSER_VERSION 1.4.1
 ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 RUN echo "@php http://php.codecasts.rocks/v3.5/php-7.0" >> /etc/apk/repositories
 RUN apk add --no-cache --update \
-    # postgresql-client \
-    # postgresql \
-    # mysql-client \
+    postgresql-client \
+    postgresql \
+    mysql-client \
     php7 \
     php7-redis@php \
     php7-apcu \
