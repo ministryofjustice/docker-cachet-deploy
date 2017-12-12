@@ -90,6 +90,6 @@ RUN wget https://github.com/cachethq/Cachet/archive/${cachet_ver}.tar.gz && \
 COPY conf/php-fpm-pool.conf /etc/php7/php-fpm.d/www.conf
 COPY conf/supervisord.conf /etc/supervisor/supervisord.conf
 COPY conf/nginx.conf /etc/nginx/nginx.conf
-COPY conf/nginx-site.conf /etc/nginx/conf.d/default.conf
+# COPY conf/nginx-site.conf /etc/nginx/conf.d/default.conf
 COPY conf/.env.docker /var/www/html/.env
 COPY entrypoint.sh /sbin/entrypoint.sh
